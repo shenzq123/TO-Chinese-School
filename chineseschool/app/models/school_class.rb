@@ -12,7 +12,7 @@ class SchoolClass < ActiveRecord::Base
     SCHOOL_CLASS_TYPE_MIXED, SCHOOL_CLASS_TYPE_ENGLISH_INSTRUCTION, SCHOOL_CLASS_TYPE_ELECTIVE, SCHOOL_CLASS_TYPE_EVERYDAYCHINESE]
 
   attr_accessible :english_name, :chinese_name, :short_name, :description, :location,
-                  :school_class_type, :max_size, :min_age, :max_age
+                  :school_class_type, :max_size, :min_age, :max_age, :parenting_class
 
   belongs_to :grade
 

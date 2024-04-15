@@ -124,5 +124,6 @@ class Admin::SchoolYearsController < ApplicationController
     @school_year.elective_class_fee = params[:school_year][:elective_class_fee].to_f
     @school_year.pva_membership_due = params[:school_year][:pva_membership_due].to_f
     @school_year.ccca_membership_due = params[:school_year][:ccca_membership_due].to_f
+    @school_year.parenting_class_fee = params[:school_year][:parenting_class_fee].to_f
   end
 end

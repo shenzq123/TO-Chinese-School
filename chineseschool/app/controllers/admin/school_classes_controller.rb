@@ -43,6 +43,7 @@ class Admin::SchoolClassesController < ApplicationController
       @school_class.max_size = params[:school_class][:max_size]
       @school_class.min_age = params[:school_class][:min_age]
       @school_class.max_age = params[:school_class][:max_age]
+      @school_class.parenting_class = params[:school_class][:parenting_class]
       if params[:school_class][:grade].blank?
         @school_class.grade = nil
       else

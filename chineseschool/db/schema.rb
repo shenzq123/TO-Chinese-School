@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220503134854) do
+ActiveRecord::Schema.define(:version => 20240426092532) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
@@ -158,10 +158,11 @@ ActiveRecord::Schema.define(:version => 20220503134854) do
     t.integer  "pva_due_in_cents"
     t.integer  "ccca_due_in_cents"
     t.integer  "grand_total_in_cents"
-    t.boolean  "paid",                 :default => false, :null => false
+    t.boolean  "paid",                        :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "request_in_person",    :default => false, :null => false
+    t.boolean  "request_in_person",           :default => false, :null => false
+    t.integer  "elective_class_due_in_cents", :default => 0,     :null => false
   end
 
   create_table "registration_preferences", :force => true do |t|
@@ -229,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20220503134854) do
     t.datetime "updated_at"
     t.string   "short_name"
     t.string   "school_class_type"
+    t.string   "parenting_class",   :default => "N"
   end
 
   create_table "school_years", :force => true do |t|
@@ -260,6 +262,7 @@ ActiveRecord::Schema.define(:version => 20220503134854) do
     t.integer  "tuition_discount_for_instructor_in_cents",          :default => 0,     :null => false
     t.date     "refund_90_percent_date"
     t.boolean  "auto_class_assignment",                             :default => false, :null => false
+    t.integer  "parenting_class_fee_in_cents",                      :default => 0,     :null => false
     t.integer  "elective_class_fee_in_cents",                       :default => 5000,  :null => false
   end
 
@@ -291,16 +294,15 @@ ActiveRecord::Schema.define(:version => 20220503134854) do
     t.integer  "registration_fee_in_cents"
     t.integer  "tuition_in_cents"
     t.integer  "book_charge_in_cents"
-    t.boolean  "early_registration",          :default => false, :null => false
-    t.boolean  "multiple_child_discount",     :default => false, :null => false
-    t.boolean  "pre_k_discount",              :default => false, :null => false
+    t.boolean  "early_registration",        :default => false, :null => false
+    t.boolean  "multiple_child_discount",   :default => false, :null => false
+    t.boolean  "pre_k_discount",            :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "prorate_75",                  :default => false, :null => false
-    t.boolean  "prorate_50",                  :default => false, :null => false
-    t.boolean  "instructor_discount",         :default => false, :null => false
-    t.boolean  "staff_discount",              :default => false, :null => false
-    t.integer  "elective_class_fee_in_cents", :default => 0,     :null => false
+    t.boolean  "prorate_75",                :default => false, :null => false
+    t.boolean  "prorate_50",                :default => false, :null => false
+    t.boolean  "instructor_discount",       :default => false, :null => false
+    t.boolean  "staff_discount",            :default => false, :null => false
   end
 
   create_table "student_final_marks", :force => true do |t|
@@ -314,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20220503134854) do
     t.float    "total_score"
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
+    t.boolean  "talent_award"
   end
 
   create_table "student_status_flags", :force => true do |t|
@@ -397,10 +400,11 @@ ActiveRecord::Schema.define(:version => 20220503134854) do
     t.integer  "refund_registration_fee_in_cents"
     t.integer  "refund_tuition_in_cents"
     t.integer  "refund_book_charge_in_cents"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
-    t.integer  "elective_class_fee_in_cents",                   :default => 0,   :null => false
-    t.string   "elective_class_only",              :limit => 5, :default => "N"
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.integer  "refund_elective_class_fee_in_cents", :default => 0,   :null => false
+    t.integer  "elective_class_fee_in_cents",        :default => 0,   :null => false
+    t.string   "elective_class_only",                :default => "N"
   end
 
   create_table "withdraw_requests", :force => true do |t|
