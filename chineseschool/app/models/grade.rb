@@ -51,7 +51,8 @@ class Grade < ActiveRecord::Base
   def find_available_school_class_types(school_year)
     school_class_types = self.active_grade_classes(school_year).collect { |active_school_class| active_school_class.school_class_type }
     school_class_types_1 = school_class_types.uniq.compact.sort
-    # MOVE EC TO LAST POSITION
+    # MOVE EC / ECPS TO LAST POSITION
+    school_class_types_1.include?('ECPS') ? school_class_types_1 - ['ECPS'] + ['ECPS'] : school_class_types_1
     school_class_types_1.include?('EC') ? school_class_types_1 - ['EC'] + ['EC'] : school_class_types_1
   end
 

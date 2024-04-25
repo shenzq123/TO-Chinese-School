@@ -31,7 +31,7 @@ class StudentFeePayment < ActiveRecord::Base
     self.registration_fee_in_cents + self.book_charge_in_cents + self.tuition_in_cents + self.elective_class_fee_in_cents
   end
   
-  def fill_in_tuition_and_fee(school_year, grade, elective_class, paid_and_pending_student_fee_payments)
+  def fill_in_tuition_and_fee(school_year, grade, elective_class, school_class_type, paid_and_pending_student_fee_payments)
     self.registration_fee_in_cents = school_year.registration_fee_in_cents
     if elective_class.nil?
       self.elective_class_fee_in_cents = 0
@@ -39,10 +39,10 @@ class StudentFeePayment < ActiveRecord::Base
       self.elective_class_fee_in_cents = school_year.elective_class_fee_in_cents
     end
     self.book_charge_in_cents = BookCharge.book_charge_in_cents_for school_year, grade
-    calculate_tuition school_year, grade, paid_and_pending_student_fee_payments
+    calculate_tuition school_year, grade, school_class_type, paid_and_pending_student_fee_payments
   end
 
-  def calculate_tuition(school_year, grade, paid_and_pending_student_fee_payments)
+  def calculate_tuition(school_year, grade, school_class_type, paid_and_pending_student_fee_payments)
     if PacificDate.today <= school_year.early_registration_end_date
       self.early_registration = true
       self.tuition_in_cents = school_year.early_registration_tuition_in_cents

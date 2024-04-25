@@ -230,7 +230,6 @@ ActiveRecord::Schema.define(:version => 20240426092532) do
     t.datetime "updated_at"
     t.string   "short_name"
     t.string   "school_class_type"
-    t.string   "parenting_class",   :default => "N"
   end
 
   create_table "school_years", :force => true do |t|
@@ -262,7 +261,7 @@ ActiveRecord::Schema.define(:version => 20240426092532) do
     t.integer  "tuition_discount_for_instructor_in_cents",          :default => 0,     :null => false
     t.date     "refund_90_percent_date"
     t.boolean  "auto_class_assignment",                             :default => false, :null => false
-    t.integer  "parenting_class_fee_in_cents",                      :default => 0,     :null => false
+    t.integer  "parent_and_student_class_fee_in_cents",                      :default => 0,     :null => false
     t.integer  "elective_class_fee_in_cents",                       :default => 5000,  :null => false
   end
 
