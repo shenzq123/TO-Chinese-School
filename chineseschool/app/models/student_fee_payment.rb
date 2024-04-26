@@ -53,6 +53,7 @@ class StudentFeePayment < ActiveRecord::Base
     apply_multiple_child_discount school_year, paid_and_pending_student_fee_payments.size
     apply_late_registration_prorate school_year
     apply_staff_and_instructor_discount school_year, paid_and_pending_student_fee_payments
+    apply_parent_and_student_class_fee school_year, school_class_type
   end
 
   def apply_pre_k_discount(school_year, grade)
@@ -97,6 +98,16 @@ class StudentFeePayment < ActiveRecord::Base
           self.instructor_discount = true
           self.tuition_in_cents -= school_year.tuition_discount_for_instructor_in_cents
         end
+      end
+    end
+  end
+
+  def apply_parent_and_student_class_fee(school_year, school_class_type)
+    if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE_PARENT_AND_STUDENT
+      if PacificDate.today <= school_year.early_registration_end_date
+        self.tuition_in_cents += school_year.early_registration_parent_and_student_class_fee_in_cents
+      else
+        self.tuition_in_cents += school_year.parent_and_student_class_fee_in_cents
       end
     end
   end

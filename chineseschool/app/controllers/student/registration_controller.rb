@@ -299,7 +299,7 @@ class Student::RegistrationController < ApplicationController
       student_fee_payment = StudentFeePayment.new
       student_fee_payment.student = registration_preference.student
       student_fee_payment.fill_in_tuition_and_fee registration_school_year, registration_preference.grade,
-                                                  registration_preference.elective_class, registration_preference.school_class_type
+                                                  registration_preference.elective_class, registration_preference.school_class_type,
                                                   (paid_student_fee_payments_in_family + registration_payment.student_fee_payments)
       student_fee_payment.registration_payment = registration_payment
       registration_payment.student_fee_payments << student_fee_payment
