@@ -5,7 +5,9 @@ class WithdrawRequest < ActiveRecord::Base
   STATUS_CANCELLED = 'C'
   STATUS_PENDING_FOR_APPROVAL = 'P'
 
-  attr_accessible :refund_ccca_due_in_cents, :refund_grand_total_in_cents, :refund_pva_due_in_cents, :request_by_address, :request_by_id, :request_by_name, :school_year_id, :status_by_id, :status_code
+  attr_accessible :refund_ccca_due_in_cents, :refund_grand_total_in_cents, :refund_pva_due_in_cents,
+                  :request_by_address, :request_by_id, :request_by_name, :request_by_home_phone,
+                  :school_year_id, :status_by_id, :status_code
 
   has_many :withdraw_request_details, dependent: :destroy
 
@@ -13,13 +15,26 @@ class WithdrawRequest < ActiveRecord::Base
   belongs_to :status_by, class_name: 'Person', foreign_key: 'status_by_id'
   belongs_to :school_year, class_name: 'SchoolYear', foreign_key: 'school_year_id'
 
-  validates :request_by_address, :request_by_name, presence: true
+  validates :request_by_address, :request_by_name, :request_by_home_phone, presence: true
 
   def caculate_refund_grand_total_in_cents
     self.refund_grand_total_in_cents = self.refund_pva_due_in_cents + self.refund_ccca_due_in_cents
     self.withdraw_request_details.each do |withdraw_request_detail|
       self.refund_grand_total_in_cents = self.refund_grand_total_in_cents + withdraw_request_detail.refund_total_in_cents
     end
+  end
+
+  def request_by_home_phone
+    format_phone_number(read_attribute(:request_by_home_phone))
+  end
+
+  def request_by_home_phone=(request_by_home_phone)
+    write_attribute(:request_by_home_phone, Address.clean_phone_number(request_by_home_phone))
+  end
+
+  def format_phone_number(phone_number)
+    return '' if phone_number.blank?
+    "(#{phone_number[0..2]}) #{phone_number[3..5]}-#{phone_number[6..-1]}"
   end
 
   def refund_grand_total

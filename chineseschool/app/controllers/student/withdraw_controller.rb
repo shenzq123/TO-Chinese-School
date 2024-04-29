@@ -104,6 +104,8 @@ class Student::WithdrawController < ApplicationController
     withdraw_request.request_by = @user.person
     withdraw_request.request_by_name = @user.person.english_name
     withdraw_request.request_by_address =  @user.person.personal_address.nil? ? '' : @user.person.personal_address.street_address
+    request_by_home_phone = @user.person.personal_home_phone.nil? ? '' : @user.person.personal_home_phone
+    withdraw_request.request_by_home_phone = request_by_home_phone
     withdraw_request.school_year = registration_school_year
     withdraw_request.status_code = WithdrawRequest::STATUS_PENDING_FOR_APPROVAL
     withdraw_request.status_by = @user.person
