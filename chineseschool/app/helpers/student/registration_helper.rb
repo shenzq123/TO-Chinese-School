@@ -11,8 +11,24 @@ module Student::RegistrationHelper
   end
 
   def label_for_tuition_discount_applied(student_fee_payment)
-    return ' (Staff Discount Applied)' if student_fee_payment.staff_discount?
-    return ' (Instructor Discount Applied)' if student_fee_payment.instructor_discount?
-    ''
+    discounts = ''
+    # return ' (Staff Discount Applied)' if student_fee_payment.staff_discount?
+    # return ' (Instructor Discount Applied)' if student_fee_payment.instructor_discount?
+    if student_fee_payment.early_registration?
+      discounts += ' (Early Registration Discount Applied)'
+    end
+    if student_fee_payment.staff_discount?
+      discounts += ' (Staff Discount Applied)'
+    end
+    if student_fee_payment.instructor_discount?
+      discounts += ' (Instructor Discount Applied)'
+    end
+    if student_fee_payment.multiple_child_discount?
+      discounts += ' (Multiple Child Discount Applied)'
+    end
+    if student_fee_payment.pre_k_discount?
+      discounts += ' (Pre K Discount Applied)'
+    end
+    discounts
   end
 end

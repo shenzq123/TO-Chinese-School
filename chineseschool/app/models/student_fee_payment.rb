@@ -43,28 +43,28 @@ class StudentFeePayment < ActiveRecord::Base
   end
 
   def calculate_tuition(school_year, grade, school_class_type, paid_and_pending_student_fee_payments)
-    if PacificDate.today <= school_year.early_registration_end_date
+    if PacificDate.today <= school_year.early_registration_end_date && school_year.early_registration_tuition_in_cents > 0
       self.early_registration = true
       self.tuition_in_cents = school_year.early_registration_tuition_in_cents
     else
       self.tuition_in_cents = school_year.tuition_in_cents
     end
+    apply_parent_and_student_class_fee school_year, school_class_type
     apply_pre_k_discount school_year, grade
     apply_multiple_child_discount school_year, paid_and_pending_student_fee_payments.size
     apply_late_registration_prorate school_year
     apply_staff_and_instructor_discount school_year, paid_and_pending_student_fee_payments
-    apply_parent_and_student_class_fee school_year, school_class_type
   end
 
   def apply_pre_k_discount(school_year, grade)
-    if Grade.grade_preschool == grade
+    if Grade.grade_preschool == grade && school_year.tuition_discount_for_pre_k_in_cents > 0
       self.pre_k_discount = true
       self.tuition_in_cents -= school_year.tuition_discount_for_pre_k_in_cents
     end
   end
 
   def apply_multiple_child_discount(school_year, registration_count_before_this_student)
-    if registration_count_before_this_student >= 2
+    if registration_count_before_this_student >= 2 && school_year.tuition_discount_for_three_or_more_child_in_cents > 0
       self.multiple_child_discount = true
       self.tuition_in_cents -= school_year.tuition_discount_for_three_or_more_child_in_cents
     end
@@ -94,7 +94,7 @@ class StudentFeePayment < ActiveRecord::Base
         paid_and_pending_student_fee_payments.each do |student_fee_payment|
           number_of_instructor_discount_already_applied += 1 if student_fee_payment.instructor_discount?
         end
-        if number_of_instructor_discount_already_applied < 2
+        if number_of_instructor_discount_already_applied < 2 && school_year.tuition_discount_for_instructor_in_cents > 0
           self.instructor_discount = true
           self.tuition_in_cents -= school_year.tuition_discount_for_instructor_in_cents
         end
