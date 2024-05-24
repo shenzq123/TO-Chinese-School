@@ -189,6 +189,10 @@ class SchoolYear < ActiveRecord::Base
     self.all :conditions => ["end_date >= ?", PacificDate.today], :order => 'start_date ASC'
   end
 
+  def self.newest_school_year
+     self.first :conditions => ["end_date >= ?", PacificDate.today], :order => 'end_date DESC'
+  end
+
   def self.find_active_registration_school_years
     self.all :conditions => ['early_registration_start_date <= ? AND registration_end_date >= ?', PacificDate.today, PacificDate.today], :order => 'start_date ASC'
   end
