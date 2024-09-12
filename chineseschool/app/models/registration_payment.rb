@@ -75,7 +75,7 @@ class RegistrationPayment < ActiveRecord::Base
   end
 
   def self.find_paid_payments_for_school_year(school_year)
-    self.all :conditions => ['school_year_id = ? AND paid = true', school_year.id], :order => 'updated_at DESC'
+    self.all :conditions => ['school_year_id = ? AND paid = true', school_year.id], :order => 'created_at DESC'
   end
   
   def self.find_paid_payments_for_date(date)
