@@ -98,6 +98,7 @@ class Registration::ReportController < ApplicationController
             summary_entry_by_updated_date = {student_count: 0, total_registration_in_cents: 0, total_tuition_in_cents: 0, total_elective_in_cents: 0,
                              total_book_charge_in_cents: 0, total_pva_due_in_cents: 0, total_ccca_due_in_cents: 0,
                              total_amount_in_cents: 0}
+            registration_summary_hash[payment_updated_date] = summary_entry_by_updated_date
           end
           summary_entry_by_updated_date[:total_elective_in_cents] += student_fee_payment.elective_class_fee_in_cents
           summary_entry_by_updated_date[:total_amount_in_cents] += student_fee_payment.elective_class_fee_in_cents
