@@ -51,9 +51,17 @@ class Grade < ActiveRecord::Base
   def find_available_school_class_types(school_year)
     school_class_types = self.active_grade_classes(school_year).collect { |active_school_class| active_school_class.school_class_type }
     school_class_types_1 = school_class_types.uniq.compact.sort
-    # MOVE EC / ECPS TO LAST POSITION
-    school_class_types_1.include?('ECPS') ? school_class_types_1 - ['ECPS'] + ['ECPS'] : school_class_types_1
-    school_class_types_1.include?('EC') ? school_class_types_1 - ['EC'] + ['EC'] : school_class_types_1
+    if school_class_types_1.include?('EC')
+      # MOVE EC TO LAST POSITION
+      school_class_types_1 = school_class_types_1 - ['EC'] + ['EC']
+    else
+      # find ec class without grade criteria since EC is not tied to grade from 2025
+      ec_school_class_types = SchoolClass.find_active_ec_classes(school_year).collect {|active_ec_class| active_ec_class.school_class_type }
+      if ec_school_class_types.size >= 1
+        school_class_types_1 = school_class_types_1 + ['EC']
+      end
+    end
+    school_class_types_1
   end
 
   def allowed_max_student_count(school_year)

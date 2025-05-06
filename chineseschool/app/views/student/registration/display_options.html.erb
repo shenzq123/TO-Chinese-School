@@ -23,7 +23,7 @@
       <li><b>S</b> - Simplified Chinese (簡體中文)</li>
       <li><b>T</b> - Traditional Chinese (繁體中文)</li>
       <li><b>EC</b> - Everyday Chinese (<a href="https://www.to-cs.org/tocs/?p=4091" target="_blank">實用中文 / 雙語</a>)</li>
-      <li><b>ECPS</b> - Everyday Chinese - Parent and Student Class(<a href="https://www.to-cs.org/tocs/?p=4091" target="_blank">實用中文 / 親子班</a>)</li>
+      <!--<li><b>ECPS</b> - Everyday Chinese - Parent and Student Class(<a href="https://www.to-cs.org/tocs/?p=4091" target="_blank">實用中文 / 親子班</a>)</li>-->
     </ul>
   </li>
   <li>
@@ -131,26 +131,13 @@
                 <span style="font-weight: bold; color: red;"><%= registration_preference.grade.name %> is FULL</span>
               <% else %>
                 <% available_school_class_types = registration_preference.grade.find_available_school_class_types(registration_preference.school_year) %>
-                <% ecps_avaliable = available_school_class_types.include? ('ECPS') %>
                 <% ec_avaliable = available_school_class_types.include? ('EC') %>
                 <% previous_school_year_class_assignment = student.student_class_assignment_for @registration_school_year.previous_school_year %>
-                <!--if previous grade is EC1, then only EC2 can be selected this year.-->
-                <!--if previous grade is not EC1, then EC2 is not avaliable this year-->
-                <!--if previous grade is EC2, then only EC3 can be selected this year.-->
-                <!--if previous grade is not EC2, then EC3 is not avaliable this year-->
-                <% if !previous_school_year_class_assignment.nil? &&
-                    (previous_school_year_class_assignment.school_class.grade_id >= 2 && previous_school_year_class_assignment.school_class.grade_id <= 5) %>
-                  <% if previous_school_year_class_assignment.school_class.school_class_type.starts_with?('EC') %>
-                    <% available_school_class_types.clear %>
-                    <% if ec_avaliable %>
-                      <% available_school_class_types << SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
-                    <% end %>
-                    <% if ecps_avaliable %>
-                      <% available_school_class_types << SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE_PARENT_AND_STUDENT %>
-                    <% end %>
-                  <% else %>
-                    <% available_school_class_types.delete('EC') %>
-                    <% available_school_class_types.delete('ECPS') %>
+                <!--if previous class type is EC, then only EC can be selected this year -->
+                <% if !previous_school_year_class_assignment.nil? and previous_school_year_class_assignment.school_class.school_class_type.starts_with?('EC') %>
+                  <% available_school_class_types.clear %>
+                  <% if ec_avaliable %>
+                    <% available_school_class_types << SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE %>
                   <% end %>
                 <% end %>
 
@@ -166,12 +153,11 @@
                   <% end %>
                   <%= hidden_field_tag "#{student.id}_school_class_type", school_class_type %>
                 <% else %>
-                  <!-- For K, EC/ECPS only allow school year 5 to 8 -->
+                  <!-- For K, only allow school year 5 to 8 -->
                   <% if registration_preference.grade_id == 2 %>
                     <% school_age = student.school_age_for(@registration_school_year) %>
                     <% if school_age < 5 or school_age > 8 %>
                       <% available_school_class_types.delete('EC') %>
-                      <% available_school_class_types.delete('ECPS') %>
                     <% end %>
                   <% end %>
 

@@ -178,6 +178,10 @@ class SchoolClass < ActiveRecord::Base
     self.all(:conditions => ['school_class_type = ?', SCHOOL_CLASS_TYPE_ELECTIVE]).reject { |elective_class| !elective_class.active_in?(school_year) }
   end
 
+  def self.find_active_ec_classes(school_year=SchoolYear.current_school_year)
+    self.all(:conditions => ['school_class_type = ?', SCHOOL_CLASS_TYPE_EVERYDAYCHINESE]).reject { |ec_class| !ec_class.active_in?(school_year) }
+  end
+
   def self.find_available_elective_classes_for_registration(school_age, school_year, grade)
     # 9th and above grade can only select ChineseAP, other grades cannot select ChineseAP.
     if Grade.grades_with_ap_class.include? grade
