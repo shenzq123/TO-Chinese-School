@@ -30,7 +30,7 @@ class StudentClassAssignment < ActiveRecord::Base
 
   def self.find_previous_ec_class_count(student)
     previous_ec_class_count =
-        StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments WHERE student_id = #{student.id} AND school_class_id IN (108,109,113,120,125)")
+        StudentClassAssignment.count_by_sql("SELECT COUNT(DISTINCT school_class_id) FROM student_class_assignments WHERE student_id = #{student.id} AND school_class_id IN (108,109,113,120,125)")
     previous_ec_class_count
   end
 
