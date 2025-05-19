@@ -42,6 +42,9 @@ class Grade < ActiveRecord::Base
   def find_next_assignable_school_class(school_class_type, school_year, gender)
     assignable_school_classes = self.active_grade_classes(school_year).select { |active_school_class| active_school_class.school_class_type == school_class_type }
     return nil if assignable_school_classes.empty?
+    # 20250519 Don't assign class if class type = S
+    return nil if school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_SIMPLIFIED
+
     return assignable_school_classes[0] if assignable_school_classes.size == 1
     # If there are more than one school class assignable, don't assign automatically if the flag is not set in school year
     return nil unless school_year.auto_class_assignment?
