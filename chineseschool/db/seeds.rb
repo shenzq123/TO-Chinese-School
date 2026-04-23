@@ -140,6 +140,9 @@ report_daily_online_registration_summary = Right.create(name: 'Daily Online Regi
 report_registration_integrity = Right.create(name: 'Registration Integrity Report', controller: 'registration/report', action: 'registration_integrity')
 report_sibling_in_same_grade = Right.create(name: 'Sibling in Same Grade Report', controller: 'registration/report', action: 'sibling_in_same_grade')
 
+journal_download_teacher_and_staff_list = Right.create(name: 'Download Journal Teacher & Staff List', controller: 'registration/journal', action: 'download_teacher_and_staff_list')
+journal_download_student_list = Right.create(name: 'Download Journal Student List', controller: 'registration/journal', action: 'download_student_list')
+
 
 instruction_school_classes_show = Right.create(name: 'Student List For One School Class', controller: 'instruction/school_classes', action: 'show')
 instruction_school_classes_enter_student_final_mark = Right.create(name: 'Enter Student Final Mark For One School Class', controller: 'instruction/school_classes', action: 'enter_student_final_mark')
@@ -214,6 +217,9 @@ principal.rights << principal_staff_assignments_show
 principal.rights << report_daily_online_registration_summary
 principal.rights << library_book_read_only_view
 
+principal.rights << journal_download_teacher_and_staff_list
+principal.rights << journal_download_student_list
+
 
 #
 # Assign rights to Academic Vice Principal
@@ -224,6 +230,9 @@ academic_vice_principal.rights << active_school_classes_elective_class_student_c
 academic_vice_principal.rights << instruction_active_school_classes_index
 academic_vice_principal.rights << instruction_school_classes_show
 academic_vice_principal.rights << library_book_read_only_view
+
+academic_vice_principal.rights << journal_download_teacher_and_staff_list
+academic_vice_principal.rights << journal_download_student_list
 
 
 #
