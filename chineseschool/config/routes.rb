@@ -126,6 +126,9 @@ Chineseschool::Application.routes.draw do
     get 'report/registration_integrity' => 'report#registration_integrity'
     get 'report/sibling_in_same_grade' => 'report#sibling_in_same_grade'
 
+    get 'journal/download_teacher_and_staff_list' => 'journal#download_teacher_and_staff_list'
+    get 'journal/download_student_list' => 'journal#download_student_list'
+
     get 'student_class_assignments/list_active_students_by_name' => 'student_class_assignments#list_active_students_by_name'
     get 'student_class_assignments/random_assign_grade_class' => 'student_class_assignments#random_assign_grade_class'
     get 'student_class_assignments/student_list_by_class' => 'student_class_assignments#student_list_by_class'

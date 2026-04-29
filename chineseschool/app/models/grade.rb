@@ -39,6 +39,12 @@ class Grade < ActiveRecord::Base
     return false
   end
 
+  def first_grade_or_above?
+    preschool = Grade.grade_preschool
+    kindergarten = preschool.next_grade
+    self != preschool && self != kindergarten
+  end
+
   def find_next_assignable_school_class(school_class_type, school_year, gender)
     assignable_school_classes = self.active_grade_classes(school_year).select { |active_school_class| active_school_class.school_class_type == school_class_type }
     return nil if assignable_school_classes.empty?
@@ -68,11 +74,17 @@ class Grade < ActiveRecord::Base
   end
 
   def allowed_max_student_count(school_year)
-    self.active_grade_classes(school_year).inject(0) { |memo, grade_class| memo + grade_class.max_size }
+    self.active_grade_classes(school_year).reject { |gc| gc.school_class_type == SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE }.inject(0) { |memo, grade_class| memo + grade_class.max_size }
   end
 
   def active_grade_classes_full?(school_year)
-    StudentClassAssignment.count_by_sql("SELECT COUNT(1) FROM student_class_assignments WHERE grade_id = #{self.id} AND school_year_id = #{school_year.id}") >= allowed_max_student_count(school_year)
+    non_ec_student_count = StudentClassAssignment.count_by_sql(
+      "SELECT COUNT(1) FROM student_class_assignments sca " +
+      "WHERE sca.grade_id = #{self.id} AND sca.school_year_id = #{school_year.id} " +
+      "AND NOT EXISTS (SELECT 1 FROM school_classes sc WHERE sc.id = sca.school_class_id AND sc.school_class_type = '#{SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE}') " +
+      "AND NOT EXISTS (SELECT 1 FROM registration_preferences rp WHERE rp.student_id = sca.student_id AND rp.school_year_id = sca.school_year_id AND rp.school_class_type = '#{SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE}' AND sca.school_class_id IS NULL)"
+    )
+    non_ec_student_count >= allowed_max_student_count(school_year)
   end
   
   def random_assign_grade_class(school_year)
