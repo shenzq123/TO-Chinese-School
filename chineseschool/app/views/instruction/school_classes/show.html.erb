@@ -22,6 +22,7 @@
       <% if @school_class.elective? %>
       <th>班級</th>
       <% end %>
+      <th>Preference</th>
       <th>Last Name</th>
       <th>First Name</th>
       <th>生年月</th>
@@ -39,6 +40,7 @@
       <% if @school_class.elective? %>
       <td><%=h student.student_class_assignment_for(@school_year).try(:school_class).try(:short_name) %></td>
       <% end %>
+      <td><%=h get_preference_type(student, @school_year) %></td>
       <td><%=h student.english_last_name %></td>
       <td><%=h student.english_first_name %></td>
       <td><%=h student.birth_info %></td>
