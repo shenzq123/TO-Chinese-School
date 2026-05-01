@@ -15,6 +15,12 @@ module Instruction::SchoolClassesHelper
     ''
   end
 
+  def get_preference_type(student, school_year)
+    registration_preference = student.registration_preference_for(school_year)
+    return '' if registration_preference.nil?
+    registration_preference.school_class_type
+  end
+
   private
 
   def format_family_fields_without_parent(student)
