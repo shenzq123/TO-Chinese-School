@@ -23,6 +23,7 @@
     <th>進步獎</th>
     <th>全勤獎</th>
     <th>博雄學藝獎</th>
+    <th>優秀獎</th>
     <th>總成績</th>
   </tr>
   </thead>
@@ -38,6 +39,7 @@
         <td><%= convert_to_yes_blank mark.progress_award %></td>
         <td><%= convert_to_yes_blank mark.attendance_award %></td>
         <td><%= convert_to_yes_blank mark.talent_award %></td>
+        <td><%= convert_to_yes_blank mark.excellence_award %></td>
         <td><%= h mark.total_score %></td>
       </tr>
   <% end %>

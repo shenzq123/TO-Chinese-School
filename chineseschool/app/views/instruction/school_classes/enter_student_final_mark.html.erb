@@ -38,6 +38,7 @@
         <th>進步獎</th>
         <th>全勤獎</th>
         <th>博雄學藝獎</th>
+        <th>優秀獎</th>
         <th>總成績</th>
       </tr>
       </thead>
@@ -53,6 +54,7 @@
             <td align="center"><%= check_box_tag "progress_award_#{student.id}", 'true', mark.progress_award %></td>
             <td align="center"><%= check_box_tag "attendance_award_#{student.id}", 'true', mark.attendance_award %></td>
             <td align="center"><%= check_box_tag "talent_award_#{student.id}", 'true', mark.talent_award %></td>
+            <td align="center"><%= check_box_tag "excellence_award_#{student.id}", 'true', mark.excellence_award %></td>
             <td align="center"><%= text_field_tag "total_score_#{student.id}", "#{mark.total_score}", size: 6, align: :right %></td>
           </tr>
       <% end %>
