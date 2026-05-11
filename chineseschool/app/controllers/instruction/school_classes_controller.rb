@@ -35,6 +35,7 @@ class Instruction::SchoolClassesController < ApplicationController
         mark.spirit_award = (params["spirit_award_#{student.id}"] == 'true')
         mark.attendance_award = (params["attendance_award_#{student.id}"] == 'true')
         mark.talent_award = (params["talent_award_#{student.id}"] == 'true')
+        mark.excellence_award = (params["excellence_award_#{student.id}"] == 'true')
         mark.total_score = params["total_score_#{student.id}"]
         mark.save
         if mark.errors.any?
@@ -137,7 +138,7 @@ class Instruction::SchoolClassesController < ApplicationController
 
   def students_final_marks_csv
     CSV.generate do |csv|
-      csv << ['Class Short Name', 'English First Name', 'English Last Name', 'Chinese Name', '前三名', '進步獎', '精神獎', '全勤獎', '博雄學藝獎']
+      csv << ['Class Short Name', 'English First Name', 'English Last Name', 'Chinese Name', '前三名', '進步獎', '精神獎', '全勤獎', '博雄學藝獎', '優秀獎']
       @sorted_school_classes.each do |school_class|
         @class_lists[school_class].each do |student|
           row = []
@@ -159,12 +160,14 @@ class Instruction::SchoolClassesController < ApplicationController
       row << ''
       row << ''
       row << ''
+      row << ''
     else
       row << (mark.top_three.nil? ? '' : mark.top_three)
       row << mark.progress_award
       row << mark.spirit_award
       row << mark.attendance_award
       row << mark.talent_award
+      row << mark.excellence_award
     end
   end
 

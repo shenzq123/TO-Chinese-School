@@ -316,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20240426092532) do
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
     t.boolean  "talent_award"
+    t.boolean  "excellence_award", :default => false, :null => false
   end
 
   create_table "student_status_flags", :force => true do |t|
