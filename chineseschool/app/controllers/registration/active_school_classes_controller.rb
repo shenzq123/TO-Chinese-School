@@ -32,15 +32,13 @@ class Registration::ActiveSchoolClassesController < ApplicationController
       .where('student_class_assignments.school_year_id = ? AND student_class_assignments.grade_id IS NOT NULL', @school_year.id)
       .where('school_classes.school_class_type != ?', SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE)
       .group('student_class_assignments.grade_id')
-      .count
-    puts @grade_student_counts.inspect
+      .count || {}
 
     # Count EC students by their class (Primary/Middle/Advanced)
     @ec_class_student_counts = StudentClassAssignment.joins(:school_class)
       .where('student_class_assignments.school_year_id = ?', @school_year.id)
       .where('school_classes.school_class_type = ?', SchoolClass::SCHOOL_CLASS_TYPE_EVERYDAYCHINESE)
       .group('student_class_assignments.school_class_id')
-      .count
-    puts @ec_class_student_counts.inspect
+      .count || {}
   end
 end
